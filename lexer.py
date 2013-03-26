@@ -12,6 +12,12 @@ tokens = (
 
 t_ignore = ' ' #shortcut for whitespace
 
+#give us an indication of line number
+def t_newline(token):
+	r'\n'
+	token.lexer.lineno += 1
+	pass
+
 #LANGLESLASH takes priority so that closing tags are not misinterpreted
 def t_LANGLESLASH(token):
 	r'</'
@@ -35,10 +41,12 @@ def t_STRING(token):
 	return token
 
 def t_WORD(token):
-	r'[^ <>]+'
+	r'[^ <>\n]+'
 	return token
 
-webpage = "This is <b>my</b> webpage!"
+webpage = """"This" is 
+<b>my</b> webpage!
+"""
 
 htmllexer = lex.lex()
 htmllexer.input(webpage)
