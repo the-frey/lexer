@@ -71,7 +71,7 @@ def t_error(token):
         token.lexer.skip(1)
 
 def t_NUMBER(token):
-    r'-?[0-9]+[.0-9+]*'
+    r'-?[0-9]+(?:\.[0-9]*)?'
     token.value = float(token.value)
     return token
 
@@ -184,7 +184,7 @@ def t_IDENTIFIER(token):
     return token
 
 def t_STRING(token):
-    r'"[a-zA-z \\"]*"'
+    r'"([^"\\]|(\\.))*"'
     token.value = token.value[1:-1]
     return token
 
