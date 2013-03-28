@@ -11,7 +11,7 @@ tokens = (
         'FUNCTION',     # function
         'GE',           # >=
         'GT',           # >
-#       'IDENTIFIER',   #### 
+        'IDENTIFIER',   #### 
         'IF',           # if
         'LBRACE',       # {
         'LE',           # <=
@@ -19,14 +19,14 @@ tokens = (
         'LT',           # <
         'MINUS',        # -
         'NOT',          # !
-#       'NUMBER',       #### 
+        'NUMBER',       #### 
         'OROR',         # ||
         'PLUS',         # +
         'RBRACE',       # }
         'RETURN',       # return
         'RPAREN',       # )
         'SEMICOLON',    # ;
-#       'STRING',       #### 
+        'STRING',       #### 
         'TIMES',        # *
         'TRUE',         # true
         'VAR',          # var
@@ -69,6 +69,11 @@ def t_newline(token):
 def t_error(token):
         print "JavaScript Lexer: Illegal character " + token.value[0]
         token.lexer.skip(1)
+
+def t_NUMBER(token):
+    r'-?[0-9]+[.0-9+]*'
+    token.value = float(token.value)
+    return token
 
 def t_ANDAND(token):
     r'&&'
@@ -174,7 +179,16 @@ def t_VAR(token):
     r'var'
     return token
 
-#two test cases
+def t_IDENTIFIER(token):
+    r'[a-zA-z]+'
+    return token
+
+def t_STRING(token):
+    r'"[a-zA-z \\"]*"'
+    token.value = token.value[1:-1]
+    return token
+
+#three test cases
 
 lexer = lex.lex() 
 
@@ -206,3 +220,9 @@ true /* false
 output2 = ['IF', 'EQUAL', 'EQUAL', 'TRUE', 'RETURN']
 
 print test_lexer(input2) == output2
+
+input3 = 'some_identifier -12.34 "a \\"escape\\" b"'
+
+output3 = ['IDENTIFIER', 'NUMBER', 'STRING']
+
+print test_lexer(input3) == output3
