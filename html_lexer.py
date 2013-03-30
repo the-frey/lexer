@@ -14,7 +14,7 @@ states = (
 	('htmlcomment','exclusive'),
 )
 
-t_ignore = ' ' #shortcut for whitespace
+t_ignore = ' ' #shortcut for whitespace 
 
 def t_htmlcomment(token):
 	r'<!-{2}'
